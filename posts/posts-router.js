@@ -13,8 +13,8 @@ router.post("/", (req, res) => {
     return;
   }
   db.insert({
-    name,
-    bio,
+    title,
+    contents,
     created_at,
     updated_at
   })
