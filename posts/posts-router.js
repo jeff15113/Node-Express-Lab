@@ -32,8 +32,8 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
   db.find()
-    .then(users => {
-      res.json({ users });
+    .then(posts => {
+      res.json({ posts });
     })
     .catch(error => {
       console.log(error);
@@ -47,19 +47,19 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   db.findById(id)
-    .then(users => {
-      if (user.length === 0) {
+    .then(posts => {
+      if (post.length === 0) {
         res.status(404).json({
-          message: "The user with the specified ID does not exist."
+          message: "The post with the specified ID does not exist."
         });
         return;
       }
-      res.json({ users });
+      res.json({ posts });
     })
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        error: "The users information could not be retrieved."
+        error: "The posts information could not be retrieved."
       });
       return;
     });
@@ -71,16 +71,16 @@ router.delete("/:id", (req, res) => {
     .then(response => {
       if (response === 0) {
         res.status(404).json({
-          message: "The user with the specified ID does not exist."
+          message: "The post with the specified ID does not exist."
         });
         return;
       }
-      res.json({ success: `User ${id} removed.` });
+      res.json({ success: `post ${id} removed.` });
     })
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        error: "The user could not be removed"
+        error: "The post could not be removed"
       });
       return;
     });
@@ -91,7 +91,7 @@ router.put("/:id", (req, res) => {
   const { name, bio } = req.body;
   if (!name || !bio) {
     res.status(400).json({
-      errorMessage: "Please provide name and bio for the user."
+      errorMessage: "Please provide title and contents for the post."
     });
     return;
   }
@@ -99,32 +99,32 @@ router.put("/:id", (req, res) => {
     .then(response => {
       if (response == 0) {
         res.status(404).json({
-          message: "The user with the specified ID does not exist."
+          message: "The post with the specified ID does not exist."
         });
         return;
       }
       db.findById(id)
-        .then(user => {
-          if (user.length === 0) {
+        .then(post => {
+          if (post.length === 0) {
             res.status(404).json({
-              errorMessage: "The user with the specified ID does not exist."
+              errorMessage: "The post with the specified ID does not exist."
             });
             return;
           }
-          res.json(user);
+          res.json(post);
         })
         .catch(error => {
           console.log(error);
           res
             .status(500)
-            .jason({ error: "The user information could not be modified." });
+            .jason({ error: "The post information could not be modified." });
         });
     })
     .catch(error => {
       console.log(error);
       res
         .status(500)
-        .json({ error: "The user information could not be modified." });
+        .json({ error: "The post information could not be modified." });
       return;
     });
 });
